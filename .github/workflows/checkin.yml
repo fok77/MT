@@ -1,13 +1,6 @@
 name: A自动签到
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '*.sqlite'
-      - 'src/ips.txt'
-      - 'src/verify.txt'
   schedule:
     - cron: '0 0,12 * * *'
   workflow_dispatch:
