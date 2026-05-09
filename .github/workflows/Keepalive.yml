@@ -17,13 +17,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Config git
+      - name: Empty commit
         run: |
           git config user.name "github-actions" >/dev/null 2>&1
           git config user.email "github-actions@github.com" >/dev/null 2>&1
-
-      - name: Empty commit & push
-        run: |
           git commit --allow-empty -m "chore: keepalive" >/dev/null 2>&1
           git pull --quiet origin main >/dev/null 2>&1
           git push --quiet origin main >/dev/null 2>&1
