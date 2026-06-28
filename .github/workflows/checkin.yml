@@ -2,7 +2,10 @@ name: A自动签到
 
 on:
   schedule:
-    - cron: '0 0,12 * * *'
+    - cron: '15 16 * * *'
+    - cron: '0 22 * * *'
+    - cron: '0 0 * * *'
+    - cron: '0 12 * * *'
   workflow_dispatch:
 
 jobs:
@@ -10,23 +13,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 检出仓库
-      uses: actions/checkout@v5
+    - uses: actions/checkout@v5
       with:
           fetch-depth: 0
 
-    - name: 设置Python
-      uses: actions/setup-python@v6
+    - uses: actions/setup-python@v6
       with:
         python-version: '3.11'
 
     - name: Check permissions
       run: |
         if ! gh workflow enable sync.yml >/dev/null 2>&1; then
-          echo ""
-          echo "📋 错误原因：GitHub Actions 权限不足。"
-          echo "🔧 请按主页README.md的 \"操作教程 → 设置权限\" 图片教程手动设置权限："
-          echo ""
           exit 1
         fi
       env:
@@ -37,10 +34,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         
+    - name: 随机延迟
+      run: sleep $((RANDOM % 180))
+        
     - name: 运行签到
       env:
         ACCOUNTS: ${{ secrets.ACCOUNTS }}
       run: python main.py
+      
     - name: Empty commit
       run: |
         git config user.name "github-actions" >/dev/null 2>&1
